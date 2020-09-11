@@ -1,0 +1,1774 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/20/2020 5:52:49 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VM-ASPIRENT03"
+  DTS:CreatorName="SENTINELPEAKRE\MAmeye"
+  DTS:DTSID="{E2F52605-B3A9-4A72-A928-D8204D3BD45F}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.123"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="DLP_LoadAssetMappings"
+  DTS:PackageType="5"
+  DTS:VersionBuild="20"
+  DTS:VersionGUID="{88746FCF-17B7-4D31-BF50-0F67D14E355F}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Data Flow Task"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{3B99DE68-ADA7-41CB-88CC-27D6E2D2BCB0}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Data Flow Task"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Data Flow Task\LKP Header Names"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="LKP Header Names"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[OVS_PDashboardPages]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[OVS_PDashboardPages]) [refTable]
+where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="PerformanceDashboardID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="AssetMerrickID" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="AssetName" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="AssetShorName" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page2Order" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page2Items" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ActiveFlag" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page1" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page2" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page3" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page4" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page5" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page6" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page7" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page8" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page9" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page10" dataType="DT_WSTR" length="250" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page1Value]};#{Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page2Value]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task\LKP Header Names.Connections[OleDbConnection]"
+                  connectionManagerID="{A87800FC-2976-4A62-9EF9-BEE28A6EB399}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL01Test.OVS_WEB_SPR_WorkingData]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\LKP Header Names.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Inputs[Lookup Input].Columns[Page1Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page1Value"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page1Value]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">AssetShorName</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Inputs[Lookup Input].Columns[Page2Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page2Value"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page2Value]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">Page2Items</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="IgnoreFailure"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Data Flow Task\LKP Header Names.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page1Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page1Header]"
+                      name="Page1Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page1</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page2Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page2Header]"
+                      name="Page2Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page2</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page3Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page3Header]"
+                      name="Page3Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page3</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page4Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page4Header]"
+                      name="Page4Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page4</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page5Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page5Header]"
+                      name="Page5Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page5</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page6Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page6Header]"
+                      name="Page6Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page6</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page7Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page7Header]"
+                      name="Page7Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page7</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page8Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page8Header]"
+                      name="Page8Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page8</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page9Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page9Header]"
+                      name="Page9Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page9</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page10Header]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="150"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page10Header]"
+                      name="Page10Header"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page10</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page2Order]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page2Order]"
+                      name="Page2Order"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">Page2Order</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Data Flow Task\LKP Header Names.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Data Flow Task\LKP Header Names.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\LKP Stardard Name Values"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="LKP Stardard Name Values"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [OVS].[AssetNamingLKP]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [OVS].[AssetNamingLKP]) [refTable]
+where [refTable].[Page3Header] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="AssetLKPKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="StandardName" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="Page3Header" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ID_Lease" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ID_Meter" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="DT_Tb" dataType="DT_WSTR" length="255" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page3Value]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task\LKP Stardard Name Values.Connections[OleDbConnection]"
+                  connectionManagerID="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQLDW01DEV.SPRStaging]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\LKP Stardard Name Values.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task\LKP Stardard Name Values.Inputs[Lookup Input].Columns[Page3Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page3Value"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page3Value]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">Page3Header</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="IgnoreFailure"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Data Flow Task\LKP Stardard Name Values.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Match Output].Columns[StandardName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="255"
+                      lineageId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Match Output].Columns[StandardName]"
+                      name="StandardName"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">StandardName</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Data Flow Task\LKP Stardard Name Values.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Data Flow Task\LKP Stardard Name Values.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[OVS].[AssetMapping]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQLDW01DEV.SPRStaging]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CompletionUWI]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="CompletionUWI"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CompletionUWI]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[CompletionUWI]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[WellZoneNum]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="WellZoneNum"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[WellZoneNum]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[WellZoneNum]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page1Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page1Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page1Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page1Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page2Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page2Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page2Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page2Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page3Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page3Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page3Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page3Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page4Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page4Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page4Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page4Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page5Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page5Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page5Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page5Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page6Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page6Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page6Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page6Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page7Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page7Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page7Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page7Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page8Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page8Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page8Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page8Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page9Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page9Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page9Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page9Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page10Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page10Value"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page10Value]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page10Value]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page1Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page1Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page1Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page1Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page2Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page2Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page2Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page2Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page3Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page3Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page3Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page3Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page4Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page4Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page4Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page4Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page5Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page5Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page5Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page5Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page6Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page6Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page6Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page6Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page7Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page7Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page7Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page7Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page8Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page8Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page8Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page8Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page9Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page9Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page9Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page9Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page10Header]"
+                      cachedDataType="wstr"
+                      cachedLength="250"
+                      cachedName="Page10Header"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page10Header]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page10Header]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Page2Order]"
+                      cachedDataType="i4"
+                      cachedName="Page2Order"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page2Order]"
+                      lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page2Order]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[AssetPatternKey]"
+                      cachedDataType="i4"
+                      cachedName="AssetPatternKey"
+                      externalMetadataColumnId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[frn_PatternKey]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[AssetPatternKey]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[AssetMappingKey]"
+                      dataType="i4"
+                      name="AssetMappingKey" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[frn_PatternKey]"
+                      dataType="i4"
+                      name="frn_PatternKey" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CompletionUWI]"
+                      dataType="wstr"
+                      length="255"
+                      name="CompletionUWI" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[WellZoneNum]"
+                      dataType="wstr"
+                      length="150"
+                      name="WellZoneNum" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page1Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page1Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page1Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page1Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page2Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page2Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page2Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page2Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page3Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page3Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page3Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page3Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page4Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page4Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page4Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page4Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page5Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page5Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page5Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page5Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page6Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page6Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page6Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page6Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page7Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page7Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page7Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page7Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page8Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page8Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page8Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page8Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page9Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page9Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page9Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page9Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page10Header]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page10Header" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page10Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page10Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Page2Order]"
+                      dataType="i4"
+                      name="Page2Order" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PatternName]"
+                      dataType="wstr"
+                      length="150"
+                      name="PatternName" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Factor]"
+                      dataType="r8"
+                      name="Factor" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\Pull Asset Patterns"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Pull Asset Patterns"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[OVS].[AssetPatterns]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task\Pull Asset Patterns.Connections[OleDbConnection]"
+                  connectionManagerID="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQLDW01DEV.SPRStaging]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[CompletionUWI]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[CompletionUWI]"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[CompletionUWI]"
+                      name="CompletionUWI"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[WellZoneNum]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[WellZoneNum]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[WellZoneNum]"
+                      name="WellZoneNum"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page1Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page1Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page1Value]"
+                      name="Page1Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page2Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page2Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page2Value]"
+                      name="Page2Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page3Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page3Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page3Value]"
+                      name="Page3Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page4Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page4Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page4Value]"
+                      name="Page4Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page5Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page5Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page5Value]"
+                      name="Page5Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page6Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page6Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page6Value]"
+                      name="Page6Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page7Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page7Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page7Value]"
+                      name="Page7Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page8Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page8Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page8Value]"
+                      name="Page8Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page9Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page9Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page9Value]"
+                      name="Page9Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page10Value]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page10Value]"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page10Value]"
+                      name="Page10Value"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[AssetPatternKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[AssetPatternKey]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[AssetPatternKey]"
+                      name="AssetPatternKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Factor]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Factor]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Factor]"
+                      name="Factor"
+                      precision="18"
+                      scale="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[CompletionHierarchyKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[CompletionHierarchyKey]"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[CompletionHierarchyKey]"
+                      name="CompletionHierarchyKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[MerrickID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[MerrickID]"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[MerrickID]"
+                      name="MerrickID"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[CompletionUWI]"
+                      dataType="wstr"
+                      length="255"
+                      name="CompletionUWI" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[WellZoneNum]"
+                      dataType="wstr"
+                      length="150"
+                      name="WellZoneNum" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page1Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page1Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page2Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page2Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page3Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page3Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page4Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page4Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page5Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page5Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page6Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page6Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page7Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page7Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page8Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page8Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page9Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page9Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Page10Value]"
+                      dataType="wstr"
+                      length="150"
+                      name="Page10Value" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[AssetPatternKey]"
+                      dataType="i4"
+                      name="AssetPatternKey" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[Factor]"
+                      dataType="numeric"
+                      name="Factor"
+                      precision="18"
+                      scale="5" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[CompletionHierarchyKey]"
+                      dataType="i4"
+                      name="CompletionHierarchyKey" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].ExternalColumns[MerrickID]"
+                      dataType="wstr"
+                      length="50"
+                      name="MerrickID" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[AssetPatternKey]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[AssetPatternKey]"
+                      name="AssetPatternKey" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[CompletionUWI]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[CompletionUWI]"
+                      name="CompletionUWI" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[WellZoneNum]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[WellZoneNum]"
+                      name="WellZoneNum" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page1Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page1Value]"
+                      name="Page1Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page2Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page2Value]"
+                      name="Page2Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page3Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page3Value]"
+                      name="Page3Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page4Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page4Value]"
+                      name="Page4Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page5Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page5Value]"
+                      name="Page5Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page6Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page6Value]"
+                      name="Page6Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page7Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page7Value]"
+                      name="Page7Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page8Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page8Value]"
+                      name="Page8Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page9Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page9Value]"
+                      name="Page9Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page10Value]"
+                      dataType="wstr"
+                      length="150"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Page10Value]"
+                      name="Page10Value" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Factor]"
+                      dataType="numeric"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[Factor]"
+                      name="Factor"
+                      precision="18"
+                      scale="5" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[CompletionHierarchyKey]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[CompletionHierarchyKey]"
+                      name="CompletionHierarchyKey" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[MerrickID]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[MerrickID]"
+                      name="MerrickID" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\Replace Standard Name"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Replace Standard Name"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\Replace Standard Name.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Replace Standard Name.Inputs[Derived Column Input].Columns[Page3Value]"
+                      cachedDataType="wstr"
+                      cachedLength="150"
+                      cachedName="Page3Value"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page3Value]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[REPLACENULL](#{Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Match Output].Columns[StandardName]},#{Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output].Columns[Page3Value]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">REPLACENULL(StandardName,Page3Value)</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Replace Standard Name.Inputs[Derived Column Input].Columns[StandardName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="StandardName"
+                      lineageId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Match Output].Columns[StandardName]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\Replace Standard Name.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Data Flow Task\Replace Standard Name.Inputs[Derived Column Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task\Replace Standard Name.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Data Flow Task\Replace Standard Name.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Replace Standard Name.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Replace Standard Name.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Replace Standard Name.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Replace Standard Name.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Data Flow Task.Paths[Derived Column Output]"
+              endId="Package\Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\Data Flow Task\Replace Standard Name.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Data Flow Task.Paths[Lookup Match Output]"
+              endId="Package\Data Flow Task\LKP Stardard Name Values.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Data Flow Task.Paths[Lookup Match Output1]"
+              endId="Package\Data Flow Task\Replace Standard Name.Inputs[Derived Column Input]"
+              name="Lookup Match Output"
+              startId="Package\Data Flow Task\LKP Stardard Name Values.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Data Flow Task.Paths[OLE DB Source Output]"
+              endId="Package\Data Flow Task\LKP Header Names.Inputs[Lookup Input]"
+              name="OLE DB Source Output"
+              startId="Package\Data Flow Task\Pull Asset Patterns.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Asset Mapping Table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{2BA6D59C-2A3A-4E51-93C1-E843C41D47C6}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Asset Mapping Table"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}"
+          SQLTask:SqlStatementSource="Truncate Table OVS.AssetMapping&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{D09B99D9-CB96-4BA2-9277-5540B32BFFAA}"
+      DTS:From="Package\Truncate Asset Mapping Table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Data Flow Task" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="238,42"
+          Id="Package\Data Flow Task"
+          TopLeft="255,176" />
+        <NodeLayout
+          Size="221,42"
+          Id="Package\Truncate Asset Mapping Table"
+          TopLeft="117,73" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="227.5,115">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="146.5,61"
+              Start="0,0"
+              End="146.5,53.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26.5"
+                    Point2="0,30.5"
+                    Point3="4,30.5" />
+                  <mssgle:LineSegment
+                    End="142.5,30.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="142.5,30.5"
+                    Point2="146.5,30.5"
+                    Point3="146.5,34.5" />
+                  <mssgle:LineSegment
+                    End="146.5,53.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Data Flow Task">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="205,42"
+          Id="Package\Data Flow Task\LKP Stardard Name Values"
+          TopLeft="370,272" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Data Flow Task\OLE DB Destination"
+          TopLeft="640,468" />
+        <NodeLayout
+          Size="192,42"
+          Id="Package\Data Flow Task\Replace Standard Name"
+          TopLeft="497,381" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\Data Flow Task\Pull Asset Patterns"
+          TopLeft="153,74" />
+        <NodeLayout
+          Size="169,42"
+          Id="Package\Data Flow Task\LKP Header Names"
+          TopLeft="262,170" />
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[Derived Column Output]"
+          TopLeft="593,423">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="132.5,45"
+              Start="0,0"
+              End="132.5,37.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.5"
+                    Point2="0,22.5"
+                    Point3="4,22.5" />
+                  <mssgle:LineSegment
+                    End="128.5,22.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="128.5,22.5"
+                    Point2="132.5,22.5"
+                    Point3="132.5,26.5" />
+                  <mssgle:LineSegment
+                    End="132.5,37.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[OLE DB Source Output]"
+          TopLeft="236,116">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="110.5,54"
+              Start="0,0"
+              End="110.5,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23"
+                    Point2="0,27"
+                    Point3="4,27" />
+                  <mssgle:LineSegment
+                    End="106.5,27" />
+                  <mssgle:CubicBezierSegment
+                    Point1="106.5,27"
+                    Point2="110.5,27"
+                    Point3="110.5,31" />
+                  <mssgle:LineSegment
+                    End="110.5,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[Lookup Match Output1]"
+          TopLeft="472.5,314">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="120.5,67"
+              Start="0,0"
+              End="120.5,59.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.5"
+                    Point2="0,33.5"
+                    Point3="4,33.5" />
+                  <mssgle:LineSegment
+                    End="116.5,33.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="116.5,33.5"
+                    Point2="120.5,33.5"
+                    Point3="120.5,37.5" />
+                  <mssgle:LineSegment
+                    End="120.5,59.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="12.05861328125,38.5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[Lookup Match Output]"
+          TopLeft="346.5,212">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="126,60"
+              Start="0,0"
+              End="126,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="4,30" />
+                  <mssgle:LineSegment
+                    End="122,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="122,30"
+                    Point2="126,30"
+                    Point3="126,34" />
+                  <mssgle:LineSegment
+                    End="126,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="14.80861328125,35,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Data Flow Task\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Data Flow Task\Pull Asset Patterns">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Data Flow Task\LKP Header Names">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[OVS_PDashboardPages]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Data Flow Task\LKP Stardard Name Values">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[OVS].[AssetNamingLKP]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

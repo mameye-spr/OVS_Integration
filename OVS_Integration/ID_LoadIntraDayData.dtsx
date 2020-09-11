@@ -1,0 +1,423 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/24/2020 3:59:22 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VM-ASPIRENT03"
+  DTS:CreatorName="SENTINELPEAKRE\MAmeye"
+  DTS:DTSID="{B22795DC-ACD3-4E95-B0AF-58ECF4B5923B}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.123"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="ID_LoadIntraDayData"
+  DTS:PackageType="5"
+  DTS:VersionBuild="30"
+  DTS:VersionGUID="{1DF80FAE-83B1-4032-B8F1-78F908942259}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Load Allocation Factors"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{3E4AC24E-B48D-4FD2-861E-D9958E9979F0}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Allocation Factors"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}"
+          SQLTask:SqlStatementSource="Declare @MaxRecDate datetime = (Select Max(RecordDate) From PROCOUNT.[CompletionDailyTb])&#xA;&#xA;&#xA;;WITH CompMerrickIDs&#xA;AS (&#xA;&#x9;SELECT ComplTb.UserStringB AS Completion_UWI &#xA;&#x9;&#x9;   , ComplTb.MerrickID&#xA;&#x9;&#x9;   , ch.CompletionHierarchyKey&#xA;&#x9;&#x9;   , ch.CompletionName&#xA;&#x9;&#x9;   , CH.WellboreName&#xA;&#x9;&#x9;   , ch.CompletionStatus&#xA;&#x9;FROM PROCOUNT.CompletionTb AS ComplTb&#xA;&#x9;Join SPRDW.dbo.DimCompletionHierarchy CH on CH.UWI = ComplTb.UserStringB&#xA;&#x9;WHERE ComplTb.CompletionType NOT IN (16)&#xA;&#x9;and ISNull(ComplTb.UserStringB, '') &lt;&gt; ''&#xA;&#x9;and CH.CompletionStatus in ('Active')&#xA;&#x9;and CH.CompletionHierarchyType = 'Completion'&#xA;&#x9;and ch.WellName in (&#xA;&#x9;&#x9;'KEENE 11','KEENE 12W','KEENE 13W','KEENE 14W','KEENE 15W','KEENE 17W','KEENE 18W','KEENE 75',&#xA;&#x9;&#x9;'KEENE 80','KEENE 85','KEENE 86','KEENE 87','SOUTH CERRITOS 14W','SOUTH CERRITOS 15W','SOUTH CERRITOS 33',&#xA;&#x9;&#x9;'SOUTH CERRITOS 37','WILLIAMS 10W','WILLIAMS 11W','WILLIAMS 12W','WILLIAMS 13W','WILLIAMS 14W','WILLIAMS 6',&#xA;&#x9;&#x9;'WILLIAMS 7','WILLIAMS 8W','WILLIAMS 9W'&#xA;&#x9;)&#xA;)&#xA;Insert Into SPRStaging.OVS.AllocationFactors(AllocationDate, AllocationFactor, KN_AvgOilFactor, SC_AvgOilFactor, WM_AvgOilFactor)&#xA;SELECT Distinct&#xA;&#x9;@MaxRecDate AS AllocationDate&#xA;&#x9;,Convert(Decimal(19,4), b.AllocationFactor) AllocationFactor&#xA;&#x9;,IIF(b.AvgDailyOil &lt; 1, 0, CONVERT(DECIMAL(19,4), (b.KN_AvgOil / b.AvgDailyOil))) KN_AvgOilFactor&#xA;&#x9;,IIF(b.AvgDailyOil &lt; 1, 0, CONVERT(DECIMAL(19,4), (b.SC_AvgOil / b.AvgDailyOil))) SC_AvgOilFactor&#xA;&#x9;,IIF(b.AvgDailyOil &lt; 1, 0, CONVERT(DECIMAL(19,4), (b.WM_AvgOil / b.AvgDailyOil))) WM_AvgOilFactor&#xA;FROM (&#xA;&#x9;SELECT (&#xA;&#x9;&#x9;&#x9;SELECT AVG(a.DailyOil) AvgDailyOil&#xA;&#x9;&#x9;&#x9;FROM (&#xA;&#x9;&#x9;&#x9;&#x9;SELECT recorddate&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;,SUM(OilProduction) DailyOil&#xA;&#x9;&#x9;&#x9;&#x9;FROM PROCOUNT.[CompletionDailyTb] comptb&#xA;&#x9;&#x9;&#x9;&#x9;join CompMerrickIDs ids on ids.MerrickID = comptb.MerrickID&#xA;&#x9;&#x9;&#x9;&#x9;WHERE RecordDate &gt;= DATEADD(DAY, - 7, CAST(CAST(sysdatetime() AS DATE) AS DATETIME))&#xA;&#x9;&#x9;&#x9;&#x9;GROUP BY RecordDate&#xA;&#x9;&#x9;&#x9;&#x9;) a&#xA;&#x9;&#x9;&#x9;) AvgDailyOil&#xA;&#x9;&#x9;,(&#xA;&#x9;&#x9;&#x9;SELECT AVG(a.DailyOil) KN_AvgOil&#xA;&#x9;&#x9;&#x9;FROM (&#xA;&#x9;&#x9;&#x9;&#x9;SELECT SUM(OilProduction) DailyOil&#xA;&#x9;&#x9;&#x9;&#x9;FROM PROCOUNT.[CompletionDailyTb] kn&#xA;&#x9;&#x9;&#x9;&#x9;join CompMerrickIDs ids on ids.MerrickID = kn.MerrickID&#xA;&#x9;&#x9;&#x9;&#x9;WHERE RecordDate &gt;= DATEADD(DAY, - 7, CAST(CAST(sysdatetime() AS DATE) AS DATETIME))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AND ids.CompletionName LIKE 'KEENE%'&#xA;&#x9;&#x9;&#x9;&#x9;GROUP BY RecordDate&#xA;&#x9;&#x9;&#x9;&#x9;) a&#xA;&#x9;&#x9;&#x9;) KN_AvgOil&#xA;&#x9;&#x9;,(&#xA;&#x9;&#x9;&#x9;SELECT AVG(a.DailyOil) SC_AvgOil&#xA;&#x9;&#x9;&#x9;FROM (&#xA;&#x9;&#x9;&#x9;&#x9;SELECT SUM(OilProduction) DailyOil&#xA;&#x9;&#x9;&#x9;&#x9;FROM PROCOUNT.[CompletionDailyTb] sc &#xA;&#x9;&#x9;&#x9;&#x9;join CompMerrickIDs ids on ids.MerrickID = sc.MerrickID&#xA;&#x9;&#x9;&#x9;&#x9;WHERE RecordDate &gt;= DATEADD(DAY, - 7, CAST(CAST(sysdatetime() AS DATE) AS DATETIME))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;AND ids.CompletionName LIKE 'SOUTH CERRITOS%'&#xA;&#x9;&#x9;&#x9;&#x9;GROUP BY RecordDate&#xA;&#x9;&#x9;&#x9;&#x9;) a&#xA;&#x9;&#x9;&#x9;) SC_AvgOil&#xA;&#x9;&#x9;,(&#xA;&#x9;&#x9;&#x9;SELECT AVG(a.DailyOil) WM_AvgOil&#xA;&#x9;&#x9;&#x9;FROM (&#xA;&#x9;&#x9;&#x9;&#x9;SELECT SUM(OilProduction) DailyOil&#xA;&#x9;&#x9;&#x9;&#x9;FROM PROCOUNT.[CompletionDailyTb] wm &#xA;&#x9;&#x9;&#x9;&#x9;join CompMerrickIDs ids on ids.MerrickID = wm.MerrickID&#xA;&#x9;&#x9;&#x9;&#x9;WHERE RecordDate &gt;= DATEADD(DAY, - 7, CAST(CAST(sysdatetime() AS DATE) AS DATETIME))&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;and ids.CompletionName LIKE 'WILLIAMS%'&#xA;&#x9;&#x9;&#x9;&#x9;GROUP BY RecordDate&#xA;&#x9;&#x9;&#x9;&#x9;) a&#xA;&#x9;&#x9;&#x9;) WM_AvgOil&#xA;&#x9;&#x9;,(&#xA;&#x9;&#x9;&#x9;SELECT IIF(RawOil = 0, 1, (DailyOil / RawOil)) AllocationFactor&#xA;&#x9;&#x9;&#x9;FROM (&#xA;&#x9;&#x9;&#x9;&#x9;SELECT SUM(OilProduction) DailyOil&#xA;&#x9;&#x9;&#x9;&#x9;FROM PROCOUNT.[CompletionDailyTb] comptb&#xA;&#x9;&#x9;&#x9;&#x9;join CompMerrickIDs ids on ids.MerrickID = comptb.MerrickID&#xA;&#x9;&#x9;&#x9;&#x9;WHERE RecordDate = @MaxRecDate - 1&#xA;&#x9;&#x9;&#x9;&#x9;GROUP BY RecordDate&#xA;&#x9;&#x9;&#x9;&#x9;) DailyOil&#xA;&#x9;&#x9;&#x9;&#x9;,(&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;SELECT Value RawOil&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;FROM CORPHISTTIER2.Runtime.dbo.History &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE TagName IN ('SM_HIST.KN.V.V2.GROSS_FLUID.TOT.PDAY.MID.E33')&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AND wwRetrievalMode = 'Interpolated'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AND wwInterpolationType = 'Stairstep'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;AND DATETIME = @MaxRecDate - 1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;) RawOil&#xA;&#x9;&#x9;&#x9;) AllocationFactor&#xA;&#x9;) b" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Raw Equipment Data"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{92C87B3F-3275-48D8-A74B-14B32280525F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Raw Equipment Data"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}"
+          SQLTask:SqlStatementSource="DECLARE @EquipmentValuesCDay TABLE (DateStamp datetime, MerrickID int, TagName nvarchar(256), [Value] float, MinutesToday int);&#xA;DECLARE @EquipmentValuesPDay TABLE (DateStamp datetime, MerrickID int, TagName nvarchar(256), [Value] float);&#xA;DECLARE @NonThermalValues TABLE (DateStamp datetime, MinutesToday int, AreaName nvarchar(256), LeaseName nvarchar(256), MID int, CDayValue float, PDayValue float, &#xA;          Page3Value nvarchar(256), ProjectedVolume float, AllocationFactor float, NetOilCDay float, NetOilPDay float, NetProjectedVolume float, &#xA;          KN_NetProjectedVolume float, SC_NetProjectedVolume float, WM_NetProjectedVolume float, KN_NetOilPDay float, SC_NetOilPDay float, WM_NetOilPDay float)&#xA;&#xA;DECLARE @Minutes int = 15; -- The time interval in minutes for each new record&#xA;DECLARE @StartDate datetime = DATEADD(DAY, -1, DATETIMEFROMPARTS(DATEPART(YEAR, SYSDATETIME()), DATEPART(MONTH, SYSDATETIME()), DATEPART(DAY, SYSDATETIME()), 0, 0, 0, 0));&#xA;&#xA;&#xA;--Load Equip Tags&#xA;SELECT TagName&#xA;&#x9;,CASE&#xA;&#x9;WHEN TagName LIKE '%GROSS_FLUID.TOT.CDAY.MID.E%' THEN 'GROSS_FLUID_CDAY'&#xA;&#x9;WHEN TagName LIKE '%GROSS_FLUID.TOT.PDAY.MID.E%' THEN 'GROSS_FLUID_PDAY'&#xA;&#x9;ELSE 'UNKNOWN'&#xA;&#x9;END AS ColumnName&#xA;&#x9;,'EquipmentTb' as ProcountTable&#xA;&#x9;,CASE&#xA;&#x9;&#x9;WHEN TagName LIKE '%.MID.E%' THEN RIGHT(TagName, LEN(TagName) - PATINDEX('%MID.E%', TagName) - 4) &#xA;&#x9;&#x9;ELSE 'UNKNOWN_MERRICK'&#xA;&#x9;END AS MerrickID&#xA;&#x9;,EquipmentType&#xA;&#x9;,ServerCode&#xA;Into #vXrefTier2Equipment&#xA;From SPRDW.dbo.DimTag&#xA;WHERE TagName LIKE '%.MID.E%'&#xA;   AND TagName NOT LIKE '%-%'&#xA;   AND TagName NOT LIKE '%.1D'&#xA;   and (&#xA;&#x9;&#x9;TagName LIKE '%GROSS_FLUID.TOT.CDAY.MID.E%'&#xA;&#x9;&#x9;OR&#xA;&#x9;&#x9;TagName LIKE '%GROSS_FLUID.TOT.PDAY.MID.E%'&#xA;&#x9;&#x9;)&#xA;&#xA;&#xA;-- Calculate Equipment Values for IntraDay&#xA;INSERT INTO @EquipmentValuesCDay&#xA;    SELECT h.DateTime as DateStamp&#xA;        , t.MerrickID&#xA;        , t.TagName&#xA;        , h.[Value]&#xA;        , DATEDIFF(MINUTE, CAST(@StartDate AS date), h.DateTime) as MinutesToday&#xA;    FROM #vXrefTier2Equipment t&#xA;    INNER REMOTE JOIN CORPHISTTIER2.Runtime.dbo.History h ON h.TagName = t.TagName&#xA;        AND h.wwRetrievalMode = 'Interpolated'&#xA;        AND h.wwInterpolationType = 'Stairstep'&#xA;        AND h.wwResolution = 1000 * 60 * @Minutes&#xA;       AND h.DateTime &gt;= @StartDate    &#xA;    WHERE t.ProcountTable LIKE 'EquipmentTb' AND t.ColumnName LIKE 'GROSS_FLUID_CDAY' AND t.MerrickID = 33&#xA;       OPTION (FORCE ORDER);&#xA;&#xA;INSERT INTO @EquipmentValuesPDay&#xA;    SELECT h.DateTime as DateStamp&#xA;        , t.MerrickID&#xA;        , t.TagName&#xA;        , h.[Value]&#xA;    FROM #vXrefTier2Equipment t&#xA;    INNER REMOTE JOIN CORPHISTTIER2.Runtime.dbo.History h ON h.TagName = t.TagName&#xA;        AND h.wwRetrievalMode = 'Interpolated'&#xA;        AND h.wwInterpolationType = 'Stairstep'&#xA;        AND h.wwResolution = 1000 * 60 * @Minutes&#xA;        AND h.DateTime &gt;= @StartDate    &#xA;    WHERE t.ProcountTable LIKE 'EquipmentTb' AND t.ColumnName LIKE 'GROSS_FLUID_PDAY' AND t.MerrickID = 33&#xA;       OPTION (FORCE ORDER);&#xA;&#xA;INSERT INTO @NonThermalValues&#xA;SELECT aa.DateStamp&#xA;       ,aa.MinutesToday&#xA;       ,aa.AreaName&#xA;       ,aa.LeaseName&#xA;       ,aa.MerrickID&#xA;       ,aa.CDayValue&#xA;       ,aa.PDayValue&#xA;       ,CASE WHEN aa.EquipmentName LIKE map.ID_Meter THEN map.StandardName ELSE aa.LeaseName END AS Page3Value&#xA;       ,aa.LACT_ProjectedVolume&#xA;       ,v2.AllocationFactor&#xA;       ,(aa.CDayValue * v2.AllocationFactor) NetOilCDay&#xA;       ,(aa.PDayValue * v2.AllocationFactor) NetOilPday&#xA;       ,(aa.LACT_ProjectedVolume * v2.AllocationFactor) LACT_NetProjectedVolume&#xA;       ,(aa.LACT_ProjectedVolume * v2.AllocationFactor * v2.KN_AvgOilFactor) KN_NetProjectedVolume&#xA;       ,(aa.LACT_ProjectedVolume * v2.AllocationFactor * v2.SC_AvgOilFactor) SC_NetProjectedVolume&#xA;       ,(aa.LACT_ProjectedVolume * v2.AllocationFactor * v2.WM_AvgOilFactor) WM_NetProjectedVolume&#xA;       ,(aa.PDayValue * v2.KN_AvgOilFactor) KN_NetOilPDay&#xA;       ,(aa.PDayValue * v2.SC_AvgOilFactor) SC_NetOilPDay&#xA;       ,(aa.PDayValue * v2.WM_AvgOilFactor) WM_NetOilPDay&#xA;FROM&#xA;(SELECT mc.DateStamp&#xA;      , mc.MinutesToday&#xA;      , a.AreaShort AS AreaName&#xA;      , l.LeaseName&#xA;      , mc.MerrickID&#xA;      , meterTb.EquipmentName&#xA;      , mc.Value AS CDayValue&#xA;      , mp.Value AS PDayValue&#xA;      , SUM(CASE&#xA;             WHEN mc.MinutesToday = 0 Then ISNULL(mp.[Value], 0)&#xA;             WHEN mc.MinutesToday = 1440 Then ISNULL(mp.[Value], 0)&#xA;             ELSE ((IIF(ISNULL(mc.[Value], 0) &lt; 1, 0, mc.[Value]) / IIF(mc.MinutesToday &gt;= 1440, (mc.MinutesToday - 1440), mc.MinutesToday)) * 1440)&#xA;             END) AS LACT_ProjectedVolume&#xA;FROM @EquipmentValuesCDay as mc&#xA;LEFT OUTER JOIN @EquipmentValuesPDay mp ON mp.MerrickID = mc.MerrickID AND mp.DateStamp = DATEADD(MINUTE, @Minutes, mc.DateStamp)&#xA;INNER JOIN procount.EquipmentTb meterTb ON meterTb.MerrickID = mc.MerrickID&#xA;INNER JOIN procount.AreaTb a ON a.AreaMerrickID = meterTb.AreaID&#xA;INNER JOIN procount.LeaseTb l ON l.LeaseMerrickID = meterTb.LeaseID&#xA;&#x9;WHERE mp.Value IS NOT NULL&#xA;&#x9;GROUP BY mc.DateStamp, mc.MinutesToday, a.AreaShort, l.LeaseName, mc.MerrickID, meterTb.EquipmentName, mc.Value, mp.Value) aa&#xA;LEFT JOIN OVS.AssetNamingLKP map ON map.ID_Meter = aa.EquipmentName&#xA;LEFT JOIN OVS.AllocationFactors v2 ON v2.AllocationFactor = v2.AllocationFactor;&#xA;&#xA;&#xA;Insert Into SPRStaging.OVS.SCADAEquipRaw(DateStamp, Page1Value, MID, Page2Value, Page3Value, ProjectedVolume)&#xA;Select *&#xA;From (&#xA;&#x9;SELECT ntv.DateStamp&#xA;&#x9;&#x9;,ntv.AreaName AS Page1Value&#xA;&#x9;&#x9;,ntv.MID&#xA;&#x9;&#x9;,'DIATOMITE' AS Page2Value&#xA;&#x9;&#x9;,ntv.Page3Value&#xA;&#x9;&#x9;,(-1 * ntv.NetProjectedVolume) AS ProjectedVolume&#xA;&#x9;FROM @NonThermalValues ntv&#xA;&#x9;UNION&#xA;&#x9;SELECT ntv.DateStamp&#xA;&#x9;&#x9;,ntv.AreaName AS Page1Value&#xA;&#x9;&#x9;,(-1) AS MID&#xA;&#x9;&#x9;,'NON-THERMAL' AS Page2Value&#xA;&#x9;&#x9;,'KEENE' AS Page3Value&#xA;&#x9;&#x9;,ntv.KN_NetProjectedVolume AS ProjectedVolume&#xA;&#x9;FROM @NonThermalValues ntv&#xA;&#x9;UNION&#xA;&#x9;SELECT ntv.DateStamp&#xA;&#x9;&#x9;,ntv.AreaName AS Page1Value&#xA;&#x9;&#x9;,(-2) AS MID&#xA;&#x9;&#x9;,'NON-THERMAL' AS Page2Value&#xA;&#x9;&#x9;,'SOUTH CERRITOS' AS Page3Value&#xA;&#x9;&#x9;,ntv.SC_NetProjectedVolume AS ProjectedVolume&#xA;&#x9;FROM @NonThermalValues ntv&#xA;&#x9;UNION&#xA;&#x9;SELECT ntv.DateStamp&#xA;&#x9;&#x9;,ntv.AreaName AS Page1Value&#xA;&#x9;&#x9;,(-3) AS MID&#xA;&#x9;&#x9;,'NON-THERMAL'AS Page2Value&#xA;&#x9;&#x9;,'WILLIAMS' AS Page3Value&#xA;&#x9;&#x9;,ntv.WM_NetProjectedVolume AS ProjectedVolume&#xA;&#x9;FROM @NonThermalValues ntv&#xA;)a&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Raw Meter Data"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{530355C1-FFC1-430D-98DA-100C4E01AF23}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Raw Meter Data"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}"
+          SQLTask:SqlStatementSource="DECLARE @MeterValuesCDay TABLE (DateStamp datetime, MerrickID int, TagName nvarchar(256), [Value] float, MinutesToday int);&#xA;DECLARE @MeterValuesPDay TABLE (DateStamp datetime, MerrickID int, TagName nvarchar(256), [Value] float);&#xA;&#xA;DECLARE @Minutes int = 15; -- The time interval in minutes for each new record&#xA;DECLARE @StartDate datetime = DATEADD(DAY, -1, DATETIMEFROMPARTS(DATEPART(YEAR, SYSDATETIME()), DATEPART(MONTH, SYSDATETIME()), DATEPART(DAY, SYSDATETIME()), 0, 0, 0, 0));&#xA;&#xA;&#xA;&#xA;IF OBJECT_ID('tempdb..#Subs') IS NOT NULL DROP TABLE #Subs;&#xA;IF OBJECT_ID('tempdb..#Raw') IS NOT NULL DROP TABLE #Raw;&#xA;IF OBJECT_ID('tempdb..#vXrefTier2Meters') IS NOT NULL DROP TABLE #vXrefTier2Meters;&#xA;&#xA;&#xA;--Load Raw meter data and do Adds and Subs...&#xA;-- Load Tag Names&#xA;SELECT TagName&#xA;&#x9;,CASE&#xA;&#x9;WHEN TagName LIKE '%NET_FLUID.TOT.CDAY.MID.M%' THEN 'NET_FLUID_CDAY'&#xA;&#x9;WHEN TagName LIKE '%NET_FLUID.TOT.PDAY.MID.M%' THEN 'NET_FLUID_PDAY'&#xA;&#x9;ELSE 'UNKNOWN'&#xA;&#x9;END AS ColumnName&#xA;&#x9;,'MeterTb' as ProcountTable&#xA;&#x9;,CASE&#xA;&#x9;&#x9;WHEN TagName LIKE '%.MID.M%' THEN RIGHT(TagName, LEN(TagName) - PATINDEX('%MID.M%', TagName) - 4) &#xA;&#x9;&#x9;ELSE 'UNKNOWN_MERRICK'&#xA;&#x9;END AS MerrickID&#xA;&#x9;,EquipmentType&#xA;&#x9;,ServerCode&#xA;Into #vXrefTier2Meters&#xA;From SPRDW.dbo.DimTag&#xA;WHERE TagName LIKE '%.MID.M%'&#xA;   AND TagName NOT LIKE '%-%'&#xA;   and (&#xA;&#x9;&#x9;TagName LIKE '%NET_FLUID.TOT.CDAY.MID.M%'&#xA;&#x9;&#x9;OR&#xA;&#x9;&#x9;TagName LIKE '%NET_FLUID.TOT.PDAY.MID.M%'&#xA;&#x9;&#x9;)&#xA;&#xA;INSERT INTO @MeterValuesCDay&#xA;    SELECT h.DateTime as DateStamp&#xA;        , t.MerrickID&#xA;        , t.TagName&#xA;        , h.[Value]&#xA;        , DATEDIFF(MINUTE, CAST(@StartDate AS date), h.DateTime) as MinutesToday&#xA;    FROM #vXrefTier2Meters t&#xA;    INNER REMOTE JOIN CORPHISTTIER2.Runtime.dbo.History h ON h.TagName = t.TagName &#xA;        AND h.wwRetrievalMode = 'Interpolated'&#xA;        AND h.wwInterpolationType = 'Stairstep'&#xA;        AND h.wwResolution = 1000 * 60 * @Minutes&#xA;       AND h.DateTime &gt;= @StartDate    &#xA;    WHERE t.ProcountTable LIKE 'MeterTb' AND t.ColumnName LIKE 'NET_FLUID_CDAY'&#xA;       OPTION (FORCE ORDER);&#xA;&#xA;INSERT INTO @MeterValuesPDay&#xA;    SELECT h.DateTime as DateStamp&#xA;        , t.MerrickID&#xA;        , t.TagName &#xA;        , h.[Value]&#xA;    FROM #vXrefTier2Meters t&#xA;    INNER REMOTE JOIN CORPHISTTIER2.Runtime.dbo.History h ON h.TagName = t.TagName &#xA;        AND h.wwRetrievalMode = 'Interpolated'&#xA;        AND h.wwInterpolationType = 'Stairstep'&#xA;        AND h.wwResolution = 1000 * 60 * @Minutes&#xA;        AND h.DateTime &gt;= @StartDate    &#xA;    WHERE t.ProcountTable LIKE 'MeterTb' AND t.ColumnName LIKE 'NET_FLUID_PDAY'&#xA;       OPTION (FORCE ORDER);&#xA;&#xA;&#xA;SELECT mc.DateStamp&#xA;    , mc.MinutesToday&#xA;       , a.AreaShort AS AreaName&#xA;    , l.LeaseName as LeaseName&#xA;    , mc.MerrickID&#xA;       , meterTb.MeterName&#xA;       , mc.Value AS CDayValue&#xA;       , mp.Value AS PDayValue&#xA;&#x9;, SUM(CASE&#xA;        WHEN mc.MinutesToday = 0 Then ISNULL(mp.[Value], 0)&#xA;&#x9;&#x9;WHEN mc.MinutesToday = 1440 Then ISNULL(mp.[Value], 0)&#xA;        ELSE ((IIF(ISNULL(mc.[Value], 0) &lt; 1, 0, mc.[Value]) / IIF(mc.MinutesToday &gt;= 1440, (mc.MinutesToday - 1440), mc.MinutesToday)) * 1440)&#xA;        END) AS LACT_ProjectedVolume&#xA; &#xA;Into #Raw&#xA;FROM @MeterValuesCDay as mc&#xA;LEFT OUTER JOIN @MeterValuesPDay mp ON mp.MerrickID = mc.MerrickID AND mp.DateStamp = DATEADD(MINUTE, @Minutes, mc.DateStamp)&#xA;INNER JOIN procount.MeterTb meterTb ON meterTb.MerrickID = mc.MerrickID&#xA;INNER JOIN procount.AreaTb a ON a.AreaMerrickID = meterTb.AreaID&#xA;INNER JOIN procount.LeaseTb l ON l.LeaseMerrickID = meterTb.LeaseID&#xA;WHERE mp.Value IS NOT NULL&#xA;GROUP BY mc.DateStamp, mc.MinutesToday, a.AreaShort, l.LeaseName, mc.MerrickID, meterTb.MeterName, mc.Value, mp.Value&#xA;ORDER BY DateStamp, AreaName, LeaseName, MeterName&#xA;&#xA;Select &#xA;&#x9;DateStamp &#xA;&#x9;,MerrickID &#xA;&#x9;,Case When MerrickID = 10099 Then 7711&#xA;&#x9;&#x9;When MerrickID = 7272 Then 7271 &#xA;&#x9;&#x9;When MerrickID = 7555 Then 7554&#xA;&#x9;&#x9;When MerrickID = 11875 Then 5844&#xA;&#x9;&#x9;When MerrickID = 7069 Then 7067&#xA;&#x9;End as SubFromID&#xA;&#x9;,Case When MerrickID = 10099 Then 1&#xA;&#x9;&#x9;When MerrickID = 7272 Then 1 &#xA;&#x9;&#x9;When MerrickID = 7555 Then 1&#xA;&#x9;&#x9;When MerrickID = 7069 Then 1&#xA;&#x9;&#x9;When MerrickID = 11875 Then 0&#xA;&#x9;End as subsact&#xA;&#x9;,LACT_ProjectedVolume&#xA;Into #subs&#xA;From #Raw&#xA;Where MerrickID in (7272, 7555, 7069, 10099, 11875)&#xA;&#xA;Update R&#xA;&#x9;Set r.LACT_ProjectedVolume = Case subsact When 1 Then r.LACT_ProjectedVolume - s.LACT_ProjectedVolume &#xA;&#x9;&#x9;&#x9;&#x9;&#x9; When 0 Then r.LACT_ProjectedVolume + s.LACT_ProjectedVolume &#xA;&#x9;&#x9;&#x9;&#x9;&#x9; Else r.LACT_ProjectedVolume End&#xA;From #Raw r&#xA;Join #subs s ON r.DateStamp = s.DateStamp and r.MerrickID = s.SubFromID&#xA;&#xA;INSERT INTO OVS.SCADAMeterRaw&#xA;           ([DateStamp]&#xA;           ,[MinutesToday]&#xA;           ,[AreaName]&#xA;           ,[LeaseName]&#xA;           ,[MerrickID]&#xA;           ,[MeterName]&#xA;           ,[CDayValue]&#xA;           ,[PDayValue]&#xA;           ,[LACT_ProjectedVolume])&#xA;     Select&#xA;           DateStamp&#xA;           ,MinutesToday&#xA;           ,AreaName&#xA;           ,LeaseName&#xA;           ,MerrickID&#xA;           ,MeterName&#xA;           ,CDayValue&#xA;           ,PDayValue&#xA;           ,LACT_ProjectedVolume&#xA;From #Raw " xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Load Raw Tank Data"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{5E0DF299-16BC-41FB-8579-191FD899DDB2}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Load Raw Tank Data"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="2">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}"
+          SQLTask:SqlStatementSource="DECLARE @TankLevelCDay TABLE (DateStamp datetime, MerrickID int, TagName nvarchar(256), [Value] float, MinutesToday int, ValueInches float);&#xA;DECLARE @TankLevelPDay TABLE (DateStamp datetime, MerrickID int, TagName nvarchar(256), [Value] float, ValueInches float);&#xA;&#xA;DECLARE @Minutes int = 15; -- The time interval in minutes for each new record&#xA;DECLARE @StartDate datetime = DATEADD(DAY, -1, DATETIMEFROMPARTS(DATEPART(YEAR, SYSDATETIME()), DATEPART(MONTH, SYSDATETIME()), DATEPART(DAY, SYSDATETIME()), 0, 0, 0, 0));&#xA;&#xA;IF OBJECT_ID('tempdb..#vXrefTier2Tanks') IS NOT NULL DROP TABLE #vXrefTier2Tanks;&#xA;&#xA;--Load Tank Tags&#xA;SELECT TagName&#xA;&#x9;,CASE&#xA;&#x9;WHEN TagName LIKE '%END.PDAY.MID.T%' THEN 'TANK_LEVEL_MIDNIGHT'&#xA;&#x9;WHEN TagName LIKE '%NA.RT.MID.T%' THEN 'TANK_LEVEL_CURRENT'&#xA;&#x9;ELSE 'UNKNOWN'&#xA;&#x9;END AS ColumnName&#xA;&#x9;,'TankTb' as ProcountTable&#xA;&#x9;,CASE&#xA;&#x9;&#x9;WHEN TagName LIKE '%.MID.T%' THEN RIGHT(TagName, LEN(TagName) - PATINDEX('%MID.T%', TagName) - 4)&#xA;&#x9;&#x9;ELSE 'UNKNOWN_MERRICK'&#xA;&#x9;END AS MerrickID&#xA;&#x9;,EquipmentType&#xA;&#x9;,ServerCode&#xA;Into #vXrefTier2Tanks&#xA;From SPRDW.dbo.DimTag&#xA;WHERE TagName LIKE '%.MID.T%'&#xA;   AND TagName NOT LIKE '%-%'&#xA;   and (&#xA;&#x9;TagName LIKE '%END.PDAY.MID.T%'&#xA;&#x9;OR&#xA;&#x9;TagName LIKE '%NA.RT.MID.T%'&#xA;&#x9;)&#xA;&#xA;&#xA;--Load raw Tank Data&#xA;INSERT INTO @TankLevelCDay&#xA;    SELECT h.DateTime as DateStamp&#xA;        , t.MerrickID&#xA;        , t.TagName&#xA;        , h.[Value]&#xA;        , DATEDIFF(MINUTE, CAST(@StartDate AS date), h.DateTime) as MinutesToday&#xA;        , h.[Value] * 12 AS ValueInches&#xA;    FROM #vXrefTier2Tanks t&#xA;    INNER REMOTE JOIN CORPHISTTIER2.Runtime.dbo.History h ON h.TagName = t.TagName &#xA;        AND h.wwRetrievalMode = 'Interpolated'&#xA;        AND h.wwInterpolationType = 'Stairstep'&#xA;        AND h.wwResolution = 1000 * 60 * @Minutes&#xA;        AND h.DateTime &gt;= @StartDate    &#xA;    WHERE t.ProcountTable LIKE 'TankTb' AND t.ColumnName LIKE 'TANK_LEVEL_CURRENT'&#xA;       OPTION (FORCE ORDER);&#xA;    &#xA;INSERT INTO @TankLevelPDay&#xA;    SELECT h.DateTime as DateStamp&#xA;        , t.MerrickID&#xA;        , t.TagName&#xA;        , h.[Value]&#xA;        , h.[Value] * 12 AS ValueInches&#xA;    FROM #vXrefTier2Tanks t&#xA;    INNER REMOTE JOIN CORPHISTTIER2.Runtime.dbo.History h ON h.TagName = t.TagName &#xA;        AND h.wwRetrievalMode = 'Interpolated'&#xA;        AND h.wwInterpolationType = 'Stairstep'&#xA;        AND h.wwResolution = 1000 * 60 * @Minutes&#xA;        AND h.DateTime &gt;= @StartDate    &#xA;    WHERE t.ProcountTable LIKE 'TankTb' AND t.ColumnName LIKE 'TANK_LEVEL_MIDNIGHT'&#xA;       OPTION (FORCE ORDER);&#xA;&#xA;&#xA;Insert Into SPRStaging.OVS.SCADATankRaw(DateStamp, MinutesToday, AreaName, LeaseName, CurrentBarrels, PDayBarrels, SOD_Barrels, SOD2_Barrels,&#xA;&#x9;TankDailyDiffRate_Sum)&#xA;SELECT tc.DateStamp&#xA;        , tc.MinutesToday&#xA;        , a.AreaShort AS AreaName&#xA;        , l.LeaseName&#xA;        , SUM(tc.ValueInches * tanktb.BarrelsPerInch) AS CurrentBarrels&#xA;        , SUM(tp.ValueInches * tanktb.BarrelsPerInch) AS PDayBarrels&#xA;        , SUM(sod.ValueInches * tanktb.BarrelsPerInch) AS SOD_Barrels&#xA;        , SUM(sod2.ValueInches * tanktb.BarrelsPerInch) AS SOD2_Barrels&#xA;        , SUM(CASE&#xA;                WHEN tc.MinutesToday = 0 Then (ISNULL(tp.ValueInches, 0) - ISNULL(sod.ValueInches, 0)) * tanktb.BarrelsPerInch&#xA;                  WHEN tc.MinutesToday = 1440 Then (ISNULL(tp.ValueInches, 0) - ISNULL(sod2.ValueInches, 0)) * tanktb.BarrelsPerInch&#xA;                ELSE (((ISNULL(tc.ValueInches, 0) - ISNULL(tp.ValueInches, 0)) * tanktb.BarrelsPerInch) / IIF(tc.MinutesToday &gt;= 1440, (tc.MinutesToday - 1440), tc.MinutesToday)) * 1440&#xA;                END) AS TankDailyDiffRate_Sum&#xA;FROM @TankLevelCDay tc&#xA;    LEFT OUTER JOIN @TankLevelPDay tp ON tp.MerrickID = tc.MerrickID AND tp.DateStamp = DATEADD(MINUTE, @Minutes, tc.DateStamp)&#xA;    LEFT OUTER JOIN @TankLevelPDay sod ON sod.MerrickID = tc.MerrickID AND sod.DateStamp = tc.DateStamp AND sod.DateStamp = @StartDate&#xA;    LEFT OUTER JOIN @TankLevelPDay sod2 ON sod2.MerrickID = tc.MerrickID AND sod2.DateStamp = tc.DateStamp AND sod2.DateStamp = DATEADD(DAY,1,@StartDate)&#xA;    INNER JOIN procount.TankTb tanktb ON tanktb.MerrickID = tc.MerrickID&#xA;    INNER JOIN procount.LeaseTb l ON l.LeaseMerrickID = tanktb.LeaseID&#xA;    INNER JOIN procount.AreaTb a ON a.AreaMerrickID = tanktb.AreaID&#xA;WHERE tc.MerrickID NOT IN (5312,5313,5352)&#xA;AND tp.ValueInches IS NOT NULL&#xA;GROUP BY tc.DateStamp, tc.MinutesToday, tankTb.LeaseID, a.AreaShort, l.LeaseName&#xA;ORDER BY DateStamp, AreaName, LeaseName" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Merge IntraDay Data"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{4E47C3DB-ECFC-405A-9049-FFBF58EA54DE}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Merge IntraDay Data"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}"
+          SQLTask:SqlStatementSource="Merge Into ODS.OVS.OVS_IntraDayResult T&#xA;Using (&#xA;&#x9;Select DateStamp&#xA;&#x9;&#x9;, a.Page1Value&#xA;&#x9;&#x9;, a.Page2Value&#xA;&#x9;&#x9;, a.Page3Value&#xA;&#x9;&#x9;, Case When Sum(BPDProjection) &lt; 0 Then 0 Else Sum(BPDProjection) End as BPDprojection&#xA;&#x9;From (&#xA;&#x9;Select &#xA;&#x9;&#x9;M.DateStamp&#xA;&#x9;&#x9;,M.AreaName Page1Value&#xA;&#x9;&#x9;,AM.Page2Value&#xA;&#x9;&#x9;,ISNULL(LKP.StandardName, M.LeaseName) Page3Value&#xA;&#x9;&#x9;,M.Metername&#xA;&#x9;&#x9;,M.LACT_ProjectedVolume AS Adj_LACT_ProjectedVolume&#xA;&#x9;&#x9;,Case When M.MerrickID IN (7272, 7555, 7069, 10099) Then 0 Else T.TankDailyDiffRate_Sum End AS TankDailyDiffRate_Sum&#xA;&#x9;&#x9;,Case When M.MerrickID NOT IN (7272, 7555, 7069, 10099)  Then&#xA;&#x9;&#x9;&#x9;Case When IsNull(M.LACT_ProjectedVolume, 0) + IsNull(T.TankDailyDiffRate_Sum, 0) &lt; 0 Then 0 &#xA;&#x9;&#x9;&#x9;&#x9;Else IsNull(M.LACT_ProjectedVolume, 0) + IsNull(T.TankDailyDiffRate_Sum, 0) End &#xA;&#x9;&#x9;&#x9;Else ISNULL(M.LACT_ProjectedVolume, 0) End AS BPDProjection&#xA;&#x9;From OVS.SCADAMeterRaw M&#xA;&#x9;&#x9;Left Outer Join OVS.SCADATankRaw T on M.LeaseName = T.LeaseName and M.DateStamp = T.DateStamp&#xA;&#x9;&#x9;Left outer Join OVS.AssetNamingLKP lkp ON lkp.ID_Meter = M.MeterName&#xA;&#x9;&#x9;Left Outer Join OVS.AssetMapping AM on AM.Page3Value = ISNULL(LKP.StandardName, M.LeaseName)&#xA;&#x9;Group By M.DateStamp &#xA;&#x9;&#x9;,M.AreaName &#xA;&#x9;&#x9;,AM.Page2Value&#xA;&#x9;&#x9;,LKP.StandardName &#xA;&#x9;&#x9;,M.Leasename &#xA;&#x9;&#x9;,M.Metername&#xA;&#x9;&#x9;,M.MerrickID&#xA;&#x9;&#x9;,M.LACT_ProjectedVolume&#xA;&#x9;&#x9;,T.TankDailyDiffRate_Sum&#xA;&#x9;&#xA;&#x9;Union&#xA;&#x9;&#xA;&#x9;Select &#xA;&#x9;&#x9;er.DateStamp&#xA;&#x9;&#x9;, er.Page1Value&#xA;&#x9;&#x9;, er.Page2Value&#xA;&#x9;&#x9;, er.Page3Value&#xA;&#x9;&#x9;, NULL&#xA;&#x9;&#x9;, NULL&#xA;&#x9;&#x9;, NULL&#xA;&#x9;&#x9;, er.ProjectedVolume as BPDProjection&#xA;&#x9;From OVS.SCADAEquipRaw er&#xA;&#x9;) a&#xA;&#x9;Group By DateStamp&#xA;&#x9;&#x9;, a.Page1Value&#xA;&#x9;&#x9;, a.Page2Value&#xA;&#x9;&#x9;, a.Page3Value&#xA;) AS S&#xA;ON ( T.DateStamp = S.DateStamp&#xA;&#x9;AND T.Page1Value = S.Page1Value&#xA;&#x9;AND T.Page2Value = S.Page2Value&#xA;&#x9;AND T.Page3Value = S.Page3Value&#xA;&#x9;AND T.BPDprojection = S.BPDprojection&#xA;&#x9;)&#xA;WHEN NOT MATCHED BY TARGET &#xA;THEN INSERT (&#xA;&#x9;DateStamp&#xA;&#x9;,Page1Value&#xA;&#x9;,Page2Value&#xA;&#x9;,Page3Value&#xA;&#x9;,BPDprojection&#xA;&#x9;)&#xA;Values(&#xA;&#x9;S.DateStamp&#xA;&#x9;,S.Page1Value&#xA;&#x9;,S.Page2Value&#xA;&#x9;,S.Page3Value&#xA;&#x9;,S.BPDprojection&#xA;&#x9;)&#xA;When NOT MATCHED BY SOURCE&#xA;THEN DELETE&#xA;;&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate Raw Data Tables"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{AEF47846-4148-409F-B750-3C0C0FCB1A13}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate Raw Data Tables"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7EA3F969-0FB7-49D0-A9F8-B561B449D896}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE SPRStaging.OVS.AllocationFactors;&#xA;TRUNCATE TABLE SPRStaging.OVS.SCADAEquipRaw;&#xA;TRUNCATE TABLE SPRStaging.OVS.SCADAMeterRaw;&#xA;TRUNCATE TABLE SPRStaging.OVS.SCADATankRaw;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{7D29E206-C7E7-4A35-9D6D-62EAC02FF1F8}"
+      DTS:From="Package\Truncate Raw Data Tables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Load Allocation Factors" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{AC44D8F5-5553-482D-9157-3609B1D2D106}"
+      DTS:From="Package\Load Allocation Factors"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Load Raw Equipment Data" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{7BA3BA74-61EC-474B-9E6D-13B8C20DEFEA}"
+      DTS:From="Package\Load Allocation Factors"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Load Raw Meter Data" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{2374EBD2-5BAC-4F14-B2FA-91959906C2FF}"
+      DTS:From="Package\Load Allocation Factors"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Load Raw Tank Data" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{1EA086CF-F40B-4635-AA76-667FA1878DE1}"
+      DTS:From="Package\Load Raw Equipment Data"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Merge IntraDay Data" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{FAAE82AF-3141-46AD-9D92-78B3E6B3C951}"
+      DTS:From="Package\Load Raw Meter Data"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Merge IntraDay Data" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 6]"
+      DTS:CreationName=""
+      DTS:DTSID="{BE1227CE-5F98-452F-9C32-9BEF408AF46C}"
+      DTS:From="Package\Load Raw Tank Data"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 6"
+      DTS:To="Package\Merge IntraDay Data" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="217,42"
+          Id="Package\Load Allocation Factors"
+          TopLeft="283.5,107.5" />
+        <NodeLayout
+          Size="217,42"
+          Id="Package\Load Raw Equipment Data"
+          TopLeft="5.5,209.5" />
+        <NodeLayout
+          Size="217,42"
+          Id="Package\Load Raw Meter Data"
+          TopLeft="283.5,209.5" />
+        <NodeLayout
+          Size="217,42"
+          Id="Package\Load Raw Tank Data"
+          TopLeft="561.5,209.5" />
+        <NodeLayout
+          Size="178,42"
+          Id="Package\Merge IntraDay Data"
+          TopLeft="303,311.5" />
+        <NodeLayout
+          Size="217,42"
+          Id="Package\Truncate Raw Data Tables"
+          TopLeft="283.5,5.49999999999989" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="392,47.4999999999999">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="339.75,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-225.75,60.0000000000001"
+              Start="0,0"
+              End="-225.75,52.5000000000001">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.4855842185129" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16.4855842185129"
+                    Point2="0,20.4855842185129"
+                    Point3="-4,20.4855842185129" />
+                  <mssgle:LineSegment
+                    End="-221.75,20.4855842185129" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-221.75,20.4855842185129"
+                    Point2="-225.75,20.4855842185129"
+                    Point3="-225.75,24.4855842185129" />
+                  <mssgle:LineSegment
+                    End="-225.75,52.5000000000001" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="392,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="444.25,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="225.75,60"
+              Start="0,0"
+              End="225.75,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.4855842185129" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16.4855842185129"
+                    Point2="0,20.4855842185129"
+                    Point3="4,20.4855842185129" />
+                  <mssgle:LineSegment
+                    End="221.75,20.4855842185129" />
+                  <mssgle:CubicBezierSegment
+                    Point1="221.75,20.4855842185129"
+                    Point2="225.75,20.4855842185129"
+                    Point3="225.75,24.4855842185129" />
+                  <mssgle:LineSegment
+                    End="225.75,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="114,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="235.5,59.9999999999999"
+              Start="0,0"
+              End="235.5,52.4999999999999">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.4095940959409" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,35.4095940959409"
+                    Point2="0,39.4095940959409"
+                    Point3="4,39.4095940959409" />
+                  <mssgle:LineSegment
+                    End="231.5,39.4095940959409" />
+                  <mssgle:CubicBezierSegment
+                    Point1="231.5,39.4095940959409"
+                    Point2="235.5,39.4095940959409"
+                    Point3="235.5,43.4095940959409" />
+                  <mssgle:LineSegment
+                    End="235.5,52.4999999999999" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="392,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 6]"
+          TopLeft="670,251.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-235.5,60"
+              Start="0,0"
+              End="-235.5,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.409594095941" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,35.409594095941"
+                    Point2="0,39.409594095941"
+                    Point3="-4,39.409594095941" />
+                  <mssgle:LineSegment
+                    End="-231.5,39.409594095941" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-231.5,39.409594095941"
+                    Point2="-235.5,39.409594095941"
+                    Point3="-235.5,43.409594095941" />
+                  <mssgle:LineSegment
+                    End="-235.5,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

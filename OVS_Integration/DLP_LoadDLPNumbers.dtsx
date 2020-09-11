@@ -1,0 +1,58 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/21/2020 4:04:14 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VM-ASPIRENT03"
+  DTS:CreatorName="SENTINELPEAKRE\MAmeye"
+  DTS:DTSID="{27ABFCAA-E688-4163-A28B-38E8CABF9D90}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.123"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="DLP_LoadDLPNumbers"
+  DTS:PackageType="5"
+  DTS:VersionBuild="15"
+  DTS:VersionGUID="{A5654120-1890-46B7-9241-24E83B4A97D3}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Merge Daily Lease Production data"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{86AF40B4-A474-4B32-878B-48FFAA6CD820}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Merge Daily Lease Production data"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D30043F2-B681-47C4-8CA9-39DE51249729}"
+          SQLTask:SqlStatementSource="Declare @pulldate datetime&#xA;Declare @Full INT = 1&#xA;Set @Full = (Select DatePart(dw,getdate()))&#xA;&#xA;IF @Full &lt;&gt; 2 -- Do a 90 day load&#xA;&#x9;Begin&#xA;&#x9;&#x9;Set @pulldate = Cast(DateAdd(day, -90, Cast(Getdate() as date)) as datetime);&#xA;&#x9;END&#xA;Else -- Trunc and reload from 1/1/2017&#xA;&#x9;Begin&#xA;&#x9;&#x9;Set @pulldate = '2017-01-01 00:00:000';&#xA;&#x9;&#x9;Truncate Table OVS.DailyLeaseProduction;&#xA;&#x9;END&#xA;&#xA;&#xA;MERGE INTO [SPRDW].[OVS].[DailyLeaseProduction] T&#xA;USING (&#xA;SELECT &#xA;&#x9; AM.CompletionUWI&#xA;&#x9;,AM.WellZoneNum&#xA;&#x9;,Am.Page1Value&#xA;&#x9;,Am.Page2Value&#xA;&#x9;,Am.Page3Value&#xA;&#x9;,Am.Page4Value&#xA;&#x9;,Am.Page5Value&#xA;&#x9;,Am.Page6Value&#xA;&#x9;,Am.Page7Value&#xA;&#x9;,Am.Page8Value&#xA;&#x9;,Am.Page9Value&#xA;&#x9;,Am.Page10Value&#xA;&#x9;,DP.ProductionDate&#xA;&#x9;,Cast(ISNULL(am.Factor, 1) as Decimal(18,5)) Factor&#xA;&#x9;,Cast(Sum(DP.BOEDSVRNet) * ISNULL(am.Factor, 1) as Decimal(18,2)) BOENet&#xA;&#x9;,Cast(Sum(DP.BOEDSVR) * ISNULL(am.Factor, 1)  as Decimal(18,2)) BOEGross&#xA;&#x9;,Cast(Sum(DP.EstimatedOilProductionNet) * ISNULL(am.Factor, 1)  as Decimal(18,2)) OilNet&#xA;&#x9;,Cast(Sum(DP.EstimatedOilProduction) * ISNULL(am.Factor, 1)  as Decimal(18,2)) OilGross&#xA;&#x9;,Cast(Sum(DP.EstimatedWaterProduction) * ISNULL(am.Factor, 1)  as Decimal(18,2)) WaterProduced&#xA;&#x9;,Cast(Sum(DD.EstimatedWaterInjection) * ISNULL(am.Factor, 1)  as Decimal(18,2)) WaterInjected&#xA;&#x9;,Cast(Sum(DD.EstimatedWaterSteam) * ISNULL(am.Factor, 1)  as Decimal(18,2)) Steam&#xA;&#x9;,Sum(DP.BOEDSVRNet) + &#xA;&#x9; Sum(DP.BOEDSVR) + &#xA;&#x9; Sum(DP.EstimatedOilProductionNet) + &#xA;&#x9; Sum(DP.EstimatedOilProduction) + &#xA;&#x9; Sum(DP.EstimatedWaterProduction) + &#xA;&#x9; ISNULL(Sum(DD.EstimatedWaterInjection), 0) + &#xA;&#x9; ISNULL(Sum(DD.EstimatedWaterSteam), 0) SumCheck&#xA;FROM SPRDW.dbo.FactDailyProduction&#x9;DP  &#xA;INNER JOIN SPRStaging.OVS.AssetPatterns&#x9;AM  ON DP.GoldenRecordKey = AM.CompletionHierarchyKey &#xA;LEFT JOIN SPRDW.dbo.FactDailyDisposition&#x9;DD  ON DP.Recorddate = DD.RecordDate AND DD.CompletionMerrickID = DP.CompletionMerrickID&#xA;Where 1 = 1&#xA;&#x9;and DP.ProductionDate &gt;= @pulldate&#xA;&#x9;and NOT EXISTS (select distinct * from sprdw.dbo.SoldMIDs SMID&#xA;                where SMID.MerrickID = DP.CompletionMerrickID&#xA;                AND (DP.ProductionDate &gt; SMID.SoldProductionDate&#xA;                OR YEAR(SMID.SoldProductionDate) &lt;YEAR(GETDATE()))&#xA;                AND SMID.SoldMIDsType = 'Completion')&#xA;Group By &#xA;&#x9;AM.CompletionUWI&#xA;&#x9;,am.WellZoneNum&#xA;&#x9;,DP.ProductionDate&#xA;&#x9;,am.Factor&#xA;&#x9;,Am.Page1Value&#xA;&#x9;,Am.Page2Value&#xA;&#x9;,Am.Page3Value&#xA;&#x9;,Am.Page4Value&#xA;&#x9;,Am.Page5Value&#xA;&#x9;,Am.Page6Value&#xA;&#x9;,Am.Page7Value&#xA;&#x9;,Am.Page8Value&#xA;&#x9;,Am.Page9Value&#xA;&#x9;,Am.Page10Value&#xA;Having Sum(DP.BOEDSVRNet) + &#xA;&#x9; Sum(DP.BOEDSVR) + &#xA;&#x9; Sum(DP.EstimatedOilProductionNet) + &#xA;&#x9; Sum(DP.EstimatedOilProduction) + &#xA;&#x9; Sum(DP.EstimatedWaterProduction) + &#xA;&#x9; ISNULL(Sum(DD.EstimatedWaterInjection), 0) + &#xA;&#x9; ISNULL(Sum(DD.EstimatedWaterSteam), 0) &gt; 0&#xA;) as S &#xA;ON (T.CompletionUWI = S.CompletionUWI&#xA;&#x9;AND T.WellZoneNum = S.WellZoneNum&#xA;&#x9;AND T.ProductionDate = S.ProductionDate&#xA;&#x9;AND T.Factor = S.FACTOR&#x9;&#x9;&#xA;&#x9;AND T.Page1Value&#x9; &#x9;= S.Page1Value&#xA;&#x9;AND T.Page2Value &#x9;&#x9;= S.Page2Value&#xA;&#x9;AND T.Page3Value &#x9;&#x9;= S.Page3Value&#xA;&#x9;AND T.Page4Value &#x9;&#x9;= S.Page4Value&#xA;&#x9;AND T.Page5Value &#x9;&#x9;= S.Page5Value&#xA;&#x9;AND T.Page6Value &#x9;&#x9;= S.Page6Value&#xA;&#x9;AND T.Page7Value &#x9;&#x9;= S.Page7Value&#xA;&#x9;AND T.Page8Value &#x9;&#x9;= S.Page8Value&#xA;&#x9;AND T.Page9Value &#x9;&#x9;= S.Page9Value&#xA;&#x9;AND T.Page10Value &#x9;&#x9;= S.Page10Value&#xA;&#x9;)&#xA;WHEN MATCHED &#xA;THEN UPDATE Set &#xA;&#x9;T.Page1Value&#x9; &#x9;= S.Page1Value&#xA;&#x9;,T.Page2Value &#x9;&#x9;= S.Page2Value&#xA;&#x9;,T.Page3Value &#x9;&#x9;= S.Page3Value&#xA;&#x9;,T.Page4Value &#x9;&#x9;= S.Page4Value&#xA;&#x9;,T.Page5Value &#x9;&#x9;= S.Page5Value&#xA;&#x9;,T.Page6Value &#x9;&#x9;= S.Page6Value&#xA;&#x9;,T.Page7Value &#x9;&#x9;= S.Page7Value&#xA;&#x9;,T.Page8Value &#x9;&#x9;= S.Page8Value&#xA;&#x9;,T.Page9Value &#x9;&#x9;= S.Page9Value&#xA;&#x9;,T.Page10Value &#x9;&#x9;= S.Page10Value&#xA;&#x9;,T.Factor &#x9;&#x9;&#x9;= S.Factor&#xA;&#x9;,T.BOENet &#x9;&#x9;&#x9;= S.BOENet&#xA;&#x9;,T.BOEGross &#x9;&#x9;= S.BOEGross&#xA;&#x9;,T.OilNet &#x9;&#x9;&#x9;= S.OilNet&#xA;&#x9;,T.OilGross &#x9;&#x9;= S.OilGross&#xA;&#x9;,T.WaterProduced &#x9;= S.WaterProduced&#xA;&#x9;,T.WaterInjected &#x9;= S.WaterInjected&#xA;&#x9;,T.Steam &#x9;&#x9;&#x9;= S.Steam&#xA;&#x9;,T.SumCheck &#x9;&#x9;= S.SumCheck&#xA;WHEN NOT MATCHED BY TARGET &#xA;THEN INSERT (&#xA;&#x9; Page1Value&#xA;&#x9;,Page2Value&#xA;&#x9;,Page3Value&#xA;&#x9;,Page4Value&#xA;&#x9;,Page5Value&#xA;&#x9;,Page6Value&#xA;&#x9;,Page7Value&#xA;&#x9;,Page8Value&#xA;&#x9;,Page9Value&#xA;&#x9;,Page10Value&#xA;&#x9;,ProductionDate&#xA;&#x9;,Factor&#xA;&#x9;,BOENet&#xA;&#x9;,BOEGross&#xA;&#x9;,OilNet&#xA;&#x9;,OilGross&#xA;&#x9;,WaterProduced&#xA;&#x9;,WaterInjected&#xA;&#x9;,Steam&#xA;&#x9;,CompletionUWI&#xA;&#x9;,WellZoneNum&#xA;&#x9;,SumCheck&#xA;&#x9;)&#xA;Values (&#xA;&#x9; S.Page1Value&#xA;&#x9;,S.Page2Value&#xA;&#x9;,S.Page3Value&#xA;&#x9;,S.Page4Value&#xA;&#x9;,S.Page5Value&#xA;&#x9;,S.Page6Value&#xA;&#x9;,S.Page7Value&#xA;&#x9;,S.Page8Value&#xA;&#x9;,S.Page9Value&#xA;&#x9;,S.Page10Value&#xA;&#x9;,S.ProductionDate&#xA;&#x9;,S.Factor&#xA;&#x9;,S.BOENet&#xA;&#x9;,S.BOEGross&#xA;&#x9;,S.OilNet&#xA;&#x9;,S.OilGross&#xA;&#x9;,S.WaterProduced&#xA;&#x9;,S.WaterInjected&#xA;&#x9;,S.Steam&#xA;&#x9;,S.CompletionUWI&#xA;&#x9;,S.WellZoneNum&#xA;&#x9;,S.SumCheck&#xA;&#x9;)&#xA;&#xA;;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="242,42"
+          Id="Package\Merge Daily Lease Production data"
+          TopLeft="117,99" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
