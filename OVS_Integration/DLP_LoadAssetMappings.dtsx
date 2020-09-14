@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="DLP_LoadAssetMappings"
   DTS:PackageType="5"
-  DTS:VersionBuild="20"
-  DTS:VersionGUID="{88746FCF-17B7-4D31-BF50-0F67D14E355F}">
+  DTS:VersionBuild="21"
+  DTS:VersionGUID="{A9B552B9-36C2-4304-87EF-C92C37E2E1DE}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -101,7 +101,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
               <connections>
                 <connection
                   refId="Package\Data Flow Task\LKP Header Names.Connections[OleDbConnection]"
-                  connectionManagerID="{A87800FC-2976-4A62-9EF9-BEE28A6EB399}:external"
+                  connectionManagerID="{CC2D6D1A-F19E-47E2-A525-8C323C568EB4}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL01Test.OVS_WEB_SPR_WorkingData]"
                   description="Connection manager used to access lookup data."
                   name="OleDbConnection" />
@@ -162,7 +162,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page1Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page1Header]"
                       name="Page1Header"
                       truncationRowDisposition="FailComponent">
@@ -177,7 +177,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page2Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page2Header]"
                       name="Page2Header"
                       truncationRowDisposition="FailComponent">
@@ -192,7 +192,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page3Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page3Header]"
                       name="Page3Header"
                       truncationRowDisposition="FailComponent">
@@ -207,7 +207,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page4Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page4Header]"
                       name="Page4Header"
                       truncationRowDisposition="FailComponent">
@@ -222,7 +222,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page5Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page5Header]"
                       name="Page5Header"
                       truncationRowDisposition="FailComponent">
@@ -237,7 +237,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page6Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page6Header]"
                       name="Page6Header"
                       truncationRowDisposition="FailComponent">
@@ -252,7 +252,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page7Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page7Header]"
                       name="Page7Header"
                       truncationRowDisposition="FailComponent">
@@ -267,7 +267,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page8Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page8Header]"
                       name="Page8Header"
                       truncationRowDisposition="FailComponent">
@@ -282,7 +282,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page9Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page9Header]"
                       name="Page9Header"
                       truncationRowDisposition="FailComponent">
@@ -297,7 +297,7 @@ where [refTable].[AssetShorName] = ? and [refTable].[Page2Items] = ?</property>
                       refId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page10Header]"
                       dataType="wstr"
                       errorOrTruncationOperation="Copy Column"
-                      length="150"
+                      length="250"
                       lineageId="Package\Data Flow Task\LKP Header Names.Outputs[Lookup Match Output].Columns[Page10Header]"
                       name="Page10Header"
                       truncationRowDisposition="FailComponent">
@@ -1730,7 +1730,7 @@ where [refTable].[Page3Header] = ?</property>
       <Property>
         <Name>OverwriteParamsSQLProp</Name>
         <Value
-          type="q2:string">false</Value>
+          type="q2:boolean">false</Value>
       </Property>
       <Property>
         <Name>UsedTableName</Name>
@@ -1740,7 +1740,7 @@ where [refTable].[Page3Header] = ?</property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:string">0</Value>
+          type="q4:int">0</Value>
       </Property>
       <Property>
         <Name>DataSourceViewID</Name>
